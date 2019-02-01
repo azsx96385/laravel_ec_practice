@@ -9,10 +9,10 @@ use Validator; //驗證器
 use Hash; //雜湊
 use Mail;
 use App\Shop\Entity\User; //使用 - user 的 Eloquent ORM　Model
-
+use DB;
 class UserAuthController extends Controller
 {
-    
+    /*****[ A. 會員註冊 ]*******************************************************/
     public function signUpPage(){
         $binding=["title"=>'註冊'];
         return view('auth.signUP',$binding);
@@ -76,7 +76,67 @@ class UserAuthController extends Controller
         //exit;
     }
     
-    
+
+    /*****[B. 會員登入]*******************************************************/
+
+    public function signInPage(){
+        $binding=[{"title"=>"登入"}];
+        return view('auth.signIn',$binding);
+
+    }
+
+    public function signInProcess(){
+        //1.接收資料
+        $input=request() -> all() //使用 變數 input接收-request的所有表單資料
+
+        //2.開始驗證資料-輸入錯誤
+            //建立規則
+        $rules=[
+            //Email 
+            'email'=>['required',"max:150","email"],
+            //密碼
+            'password'=>["required","min:6"],
+        ];
+            //驗證資料
+            $validator=Validator::make($input,$rules)
+
+            if($validator->fails()){
+                //資料驗證錯誤
+                return redirect('/user/auth/sign-in')
+                ->withErrors($validator)->withInput(); //顯示驗證器驗證的錯誤訊息
+            }
+        
+        //3.取得使用者資料-資料庫撈資料-判斷密碼是否有誤
+
+            //啟用紀錄 SQL 語法
+            DB::enableQueryLog(); 
+
+
+        //使用email-撈取使用者-資料
+        $User=User::where('email',$input['email'])->firstOrFail(); //比對email-撈出資料
+            //where 限定-撈取email資料-firstOrFail() 限制撈取第一筆資料-若無則丟出例外訊息
+
+            var_dump(DB::getQueryLog());
+           // exit;
+        
+        //檢查密碼是否正確
+        $is_password_correct=Hash::check($input['password'],$User->password);
+
+        if( !$is_password_correct ){
+            //False-密碼錯誤-回傳密碼錯誤訊息
+            $error_message=['msg'=>["密碼驗證錯誤"],];
+            return redirect('user/auth/sign-in')-withErrors($error_message)->withInput();
+        }
+
+        //session 紀錄會員編號
+        session()->put('user_id',$User->id);
+
+        //重新回到首頁
+        return redirect()->intended("/");
+
+    }
+
+
     /************************************************************/
     /**
      * Display a listing of the resource.

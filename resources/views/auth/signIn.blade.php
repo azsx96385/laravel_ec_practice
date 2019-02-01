@@ -9,14 +9,31 @@
 
 
 @section('content')
-
+<div class="container">
 <h1>{{ $title}}</h1>
-<!--{{ $title}} 引入該模板後，可接受傳入的變數-->
-
+<!-- 錯誤訊息元件 {{ $title}} 引入該模板後，可接受傳入的變數-->
 @include('components.socialButtons')
+
+<form action="/user/auth/sign-in" method="post">
+
+<label for="">Email: <input type="text" name="email" placeholder="Email" value="{{ old('email') }}"></label>
+<label for="">密碼: <input type="password" name="password" placeholder="密碼" value="{{ old('password') }}"></label>
+<button type="sumit">登入</button>
+
+<!--[CSRF 欄位] -->
+{!! csrf_field() !!}
+
+
+</form>
+
+
 
 Email: <input type="text" name='email' placeholder='Email'>
 密碼: <input type="password" name='password' placeholder='密碼'>
 暱稱: <input type="text" name='nickname' placeholder='暱稱'>
 
+
+
+
+</div>
 @endsection
