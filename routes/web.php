@@ -37,14 +37,11 @@ Route::group(['prefix'=>'user'],function(){
         //[登入&登出處理-功能]
 
         //使用者登入頁面
-        Route::get('/sign-in','UserAuthController@signInPage')
-
+        Route::get('/sign-in','UserAuthController@signInPage');
         //使用者登入處理
-        Route::post('/sign-in','UserAuthController@signInProcess')
-
-
+        Route::post('/sign-in','UserAuthController@signInProcess');
         //使用者登出
-        Route::get('/sign-out','UserAuthController@signOut')
+        Route::get('/sign-out','UserAuthController@signOut');
         
         
         //--------------------------------------------------------------------------------------------------

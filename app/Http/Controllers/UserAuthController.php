@@ -16,7 +16,7 @@ class UserAuthController extends Controller
     public function signUpPage(){
         $binding=["title"=>'註冊'];
         return view('auth.signUP',$binding);
-
+        
     }
     
     
@@ -80,31 +80,31 @@ class UserAuthController extends Controller
     /*****[B. 會員登入]*******************************************************/
 
     public function signInPage(){
-        $binding=[{"title"=>"登入"}];
+        $binding=["title"=>"登入"];
         return view('auth.signIn',$binding);
 
     }
 
     public function signInProcess(){
         //1.接收資料
-        $input=request() -> all() //使用 變數 input接收-request的所有表單資料
+        $input=request() -> all(); //使用 變數 input接收-request的所有表單資料
 
         //2.開始驗證資料-輸入錯誤
             //建立規則
         $rules=[
             //Email 
-            'email'=>['required',"max:150","email"],
+            'email'=>['required','max:150','email',],
             //密碼
-            'password'=>["required","min:6"],
+            'password'=>['required','min:6',],
         ];
             //驗證資料
-            $validator=Validator::make($input,$rules)
+            $validator=Validator::make($input,$rules);
 
             if($validator->fails()){
                 //資料驗證錯誤
                 return redirect('/user/auth/sign-in')
                 ->withErrors($validator)->withInput(); //顯示驗證器驗證的錯誤訊息
-            }
+            };
         
         //3.取得使用者資料-資料庫撈資料-判斷密碼是否有誤
 
@@ -136,6 +136,10 @@ class UserAuthController extends Controller
 
     }
 
+    public function signOut(){
+        session()->forget('user_id');
+        return redirect('/');
+    }
 
     /************************************************************/
     /**

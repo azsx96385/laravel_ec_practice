@@ -13,7 +13,7 @@
 <h1>{{ $title}}</h1>
 <!-- 錯誤訊息元件 {{ $title}} 引入該模板後，可接受傳入的變數-->
 @include('components.socialButtons')
-
+@include('components.validationErrorMessage')
 <form action="/user/auth/sign-in" method="post">
 
 <label for="">Email: <input type="text" name="email" placeholder="Email" value="{{ old('email') }}"></label>
@@ -25,14 +25,6 @@
 
 
 </form>
-
-
-
-Email: <input type="text" name='email' placeholder='Email'>
-密碼: <input type="password" name='password' placeholder='密碼'>
-暱稱: <input type="text" name='nickname' placeholder='暱稱'>
-
-
 
 
 </div>
