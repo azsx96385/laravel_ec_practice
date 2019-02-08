@@ -10,6 +10,11 @@ use Hash; //雜湊
 use Mail;
 use App\Shop\Entity\User; //使用 - user 的 Eloquent ORM　Model
 use DB;
+use Socialite; //Fb 社群登入
+
+
+
+
 class UserAuthController extends Controller
 {
     /*****[ A. 會員註冊 ]*******************************************************/
@@ -140,6 +145,19 @@ class UserAuthController extends Controller
         session()->forget('user_id');
         return redirect('/');
     }
+
+    /*****[C. 社群登入-FB]*******************************************************/
+
+    public function facebookSignInProcess(){
+        $redirect_url=env('FB_REDIRECT');
+
+        return Socialite::driver('facebook')
+            ->scopes(['user_friends'])->redirectUrl($redirect_url)->redirect();
+    }
+
+    //0208 - 社群登入暫緩
+    // public function facebookSignInCallbackProcess(){
+    // }
 
     /************************************************************/
     /**

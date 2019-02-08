@@ -45,7 +45,12 @@ Route::group(['prefix'=>'user'],function(){
         
         
         //--------------------------------------------------------------------------------------------------
+        //[FB 社群登入-功能]
 
+        //FB 登入
+        Route::get('/facebook-sign-in','UserAuthController@facebookSignInProcess');
+        //FB登入重新導向授權資料處理
+        //Route::get('/facebook-sign-in-callback','UserAuthController@facebookSignInCallbackProcess')
 
 
 
